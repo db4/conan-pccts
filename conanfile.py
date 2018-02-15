@@ -5,7 +5,7 @@ from conans import ConanFile, tools
 class PcctsConan(ConanFile):
     name = "pccts"
     version = "1.33"
-    settings = "os", "arch"
+    settings = "os", "compiler", "arch"
     description = "PCCTS toolkit"
     license = "public domain"
     url = "http://git.rt.local/conan/pccts"
@@ -43,4 +43,5 @@ class PcctsConan(ConanFile):
 
     def package_id(self):
         if self.settings.os == "Windows":
-            self.settings.arch = "x86"
+            self.info.settings.compiler = "Any"
+            self.info.settings.arch = "Any"
