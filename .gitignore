@@ -1,0 +1,7 @@
+build
+package
+*.pyc
+pccts*
+conanbuildinfo.cmake
+conanbuildinfo.txt
+conaninfo.txt
