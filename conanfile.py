@@ -1,4 +1,4 @@
-import os
+import os, shutil
 from conans import ConanFile, tools
 
 
@@ -6,32 +6,24 @@ class PcctsConan(ConanFile):
     name = "pccts"
     version = "1.33"
     settings = "os", "compiler", "arch"
+    generators = "gcc"
     description = "PCCTS toolkit"
     license = "public domain"
     url = "http://git.rt.local/conan/pccts"
 
     def build(self):
         if self.settings.os == "Windows":
-            url = "http://www.polhode.com/win32.zip"
-            tools.get(url)
+            tools.get("http://www.polhode.com/win32.zip")
         else:
-            url = "http://www.polhode.com/pccts133mr.zip"
-            tools.get(url)
-            tools.patch(base_path="pccts/sorcerer/lib",
-                        patch_string="""
---- a/makefile\t2000-09-10 03:57:13.000000000 +0300
-+++ b/makefile\t2018-02-15 12:04:17.869441600 +0300
-@@ -5,7 +5,7 @@
- OBJ = astlib.o sstack.o sorlist.o sintstack.o
- CC=cc
- COPT=-g
--CFLAGS=$(COPT) -I../../h -I../h
-+CFLAGS=$(COPT) -I../../h -I../h -DPCCTS_USE_STDARG
-
- libs : $(OBJ) $(SRC)
-
-""")
-            self.run("cd pccts && make")
+            tools.get("http://www.polhode.com/pccts133mr.zip")
+            if tools.cross_building(self.settings):
+                shutil.copytree("pccts", "pccts-host")
+                self.run("cd pccts-host && make COPT=-DPCCTS_USE_STDARG")
+                tools.replace_in_file("pccts/sorcerer/makefile", "$(BIN)/antlr", "../../pccts-host/bin/antlr")
+                tools.replace_in_file("pccts/sorcerer/makefile", "$(BIN)/dlg", "../../pccts-host/bin/dlg")
+            tools.replace_in_file("pccts/support/genmk/makefile", "$(CC) -o", "$(CC) $(COPT) -o")
+            self.run("cd pccts && make CC=\"gcc @{0}\" COPT=-DPCCTS_USE_STDARG".format(
+                os.path.join(self.build_folder, "conanbuildinfo.gcc")))
 
     def package(self):
         self.copy("*.h", dst="include", src="pccts/h")
