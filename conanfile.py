@@ -26,6 +26,10 @@ class PcctsConan(ConanFile):
                 os.path.join(self.build_folder, "conanbuildinfo.gcc")))
 
     def package(self):
+        tmp = tools.load("pccts/h/antlr.h")
+        license_contents = tmp[tmp.find(" * SOFTWARE RIGHTS"):tmp.find("*/")]
+        tools.save("LICENSE", license_contents)
+        self.copy("LICENSE")
         self.copy("*.h", dst="include", src="pccts/h")
         self.copy("*.cpp", dst="include", src="pccts/h")
         self.copy("*", dst="bin", src="pccts/bin", excludes="*.txt")
