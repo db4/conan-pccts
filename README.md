@@ -14,20 +14,20 @@ Download conan client from [Conan.io](https://conan.io) and run:
 
 ## Upload packages to server
 
-    $ conan upload pccts/1.33@dbely/stable --all
+    $ conan upload pccts/1.33MR33@dbely/stable --all
 
 ## Reuse the packages
 
 ### Basic setup
 
-    $ conan install pccts/1.33@dbely/stable
+    $ conan install pccts/1.33MR33@dbely/stable
 
 ### Project setup
 
 If you handle multiple dependencies in your project, it would be better to add a *conanfile.txt*
 
     [requires]
-    pccts/1.33@dbely/stable
+    pccts/1.33MR33@dbely/stable
 
     [generators]
     txt

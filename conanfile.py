@@ -4,7 +4,7 @@ from conans import ConanFile, tools
 
 class PcctsConan(ConanFile):
     name = "pccts"
-    version = "1.33"
+    version = "1.33MR33"
     settings = "os", "compiler", "arch"
     generators = "gcc"
     description = "PCCTS toolkit"

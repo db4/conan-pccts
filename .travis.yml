@@ -1,6 +1,6 @@
 env:
    global:
-     - CONAN_REFERENCE: "pccts/1.33"
+     - CONAN_REFERENCE: "pccts/1.33MR33"
      - CONAN_USERNAME: "dbely"
      - CONAN_LOGIN_USERNAME: "dbely"
      - CONAN_CHANNEL: "testing"
