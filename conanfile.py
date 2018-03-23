@@ -5,7 +5,7 @@ from conans import ConanFile, tools
 class PcctsConan(ConanFile):
     name = "pccts"
     version = "1.33MR33"
-    settings = "os", "compiler", "arch"
+    settings = "os", "compiler", "os_build", "arch", "arch_build"
     generators = "gcc"
     description = "PCCTS toolkit"
     license = "public domain"
@@ -38,6 +38,13 @@ class PcctsConan(ConanFile):
         self.env_info.path.append(os.path.join(self.package_folder, "bin"))
 
     def package_id(self):
+        os = self.info.settings.os
         if self.settings.os == "Windows":
-            self.info.settings.compiler = "Any"
-            self.info.settings.arch = "Any"
+            arch = "Any"
+        else:
+            arch = self.info.settings.arch
+        del self.info.settings.os
+        del self.info.settings.compiler
+        del self.info.settings.arch
+        self.info.settings.os_build = os
+        self.info.settings.arch_build = arch
