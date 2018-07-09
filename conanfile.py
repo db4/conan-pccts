@@ -5,14 +5,14 @@ from conans import ConanFile, tools
 class PcctsConan(ConanFile):
     name = "pccts"
     version = "1.33MR33"
-    settings = "os", "compiler", "arch"
+    settings = "os_build", "compiler", "arch_build"
     generators = "gcc"
     description = "PCCTS toolkit"
     license = "public domain"
     url = "https://github.com/db4/conan-pccts"
 
     def build(self):
-        if self.settings.os == "Windows":
+        if self.settings.os_build == "Windows":
             tools.get("http://www.polhode.com/win32.zip", sha1="db910f4397b2f77a58980e9ab3ba2603c42ba50e")
         else:
             tools.get("http://www.polhode.com/pccts133mr.zip", sha1="5b3417efd5f537434b568114bcda853b4975d851")
@@ -39,11 +39,6 @@ class PcctsConan(ConanFile):
 
     def package_id(self):
         self.info.include_build_settings()
-        if self.info.settings.os == "Windows":
-            self.info.settings.arch_build = "Any"
-        else:
-            self.info.settings.arch_build = self.info.settings.arch
-        self.info.settings.os_build = self.info.settings.os
-        del self.info.settings.os
+        if self.info.settings.os_build == "Windows":
+            del self.info.settings.arch_build
         del self.info.settings.compiler
-        del self.info.settings.arch
