@@ -9,7 +9,7 @@ class PcctsConan(ConanFile):
     generators = "gcc"
     description = "PCCTS toolkit"
     license = "public domain"
-    url = "https://github.com/db4/conan-pccts"
+    url = "http://git.rt.local/conan/conan-pccts.git"
 
     def build(self):
         if self.settings.os_build == "Windows":

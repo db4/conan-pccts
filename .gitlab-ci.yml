@@ -1,0 +1,38 @@
+variables:
+  CONAN_USERNAME: "dbely"
+  CONAN_LOGIN_USERNAME: "dbely"
+  CONAN_CHANNEL: "testing"
+  CONAN_UPLOAD: "http://artifactory/artifactory/api/conan/conan-local"
+  CONAN_VISUAL_VERSIONS: "15"
+  CONAN_VISUAL_RUNTIMES: "MD"
+  CONAN_STABLE_BRANCH_PATTERN: "release/*"
+  CONAN_GCC_VERSIONS: "4.9"
+
+
+.build_linux: &build_linux
+  before_script:
+    - sudo pip install conan --upgrade
+    - sudo pip install conan_package_tools --upgrade
+    - conan user # It creates the conan data directory
+  script:
+    - python build.py
+  tags:
+    - linux
+
+build_linux_x86:
+  image: conanio/gcc49-x86
+  <<: *build_linux
+
+build_linux_x64:
+  image: conanio/gcc49
+  <<: *build_linux
+
+build_windows:
+  before_script:
+    - pip install conan --upgrade
+    - pip install conan_package_tools --upgrade
+    - conan user # It creates the conan data directory
+  script:
+    - python build.py
+  tags:
+    - windows
